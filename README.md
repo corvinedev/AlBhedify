@@ -2,7 +2,16 @@
 
 *An RPG Maker MZ plugin that translates text into an in-game language a la FFX's Al Bhed*
 
-### Example
+## Installation
+
+1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.0`
+2. Download `AlBhedify.js`
+3. Save or copy `AlBhedify.js` to `/plugins` in your project folder
+4. Inside the editor, open the plugin manager and add **AlBhedify**
+5. Place AlBhedify before any other plugins that modify windows or messages
+6. Configure the plugin parameters - **at the very least, open the `Language Map` parameter and press "OK"**
+
+## Example
 
 In the following example, all plugin settings are set to the defaults.
 
@@ -19,15 +28,6 @@ To learn a letter, the plugin command `Learn Letter` is used. In this example, t
 Now the letter `E` will no longer be AlBhedified. The message from before will show up in-game with the regular letter, and it will no longer be highlighted.
 
 ![E has been learned](img/sample-translated-e.png)
-
-## Installation
-
-1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.0`
-2. Download `AlBhedify.js`
-3. Save or copy `AlBhedify.js` to `/plugins` in your project folder
-4. Inside the editor, open the plugin manager and add **AlBhedify**
-5. Place AlBhedify before any other plugins that modify windows or messages
-6. Configure the plugin parameters - **at the very least, open the `Language Map` parameter and press "OK"**
 
 ## Commands
 
