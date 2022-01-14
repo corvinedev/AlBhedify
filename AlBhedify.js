@@ -1,6 +1,6 @@
-//=============================================================================
+//==============================================================================
 // AlBhedify
-//=============================================================================
+//==============================================================================
 /*:
  * @target MZ
  * @plugindesc Enables translation to an in-game language a la FFX's Al Bhed
@@ -119,6 +119,9 @@
  * You can also choose whether or not AlBhedified letters should be colored,
  * and which color code to use for this.
  *
+ * Please see the documentation at https://github.com/corvinedev/AlBhedify for
+ * more information on how to use this plugin.
+ *
  * Some control codes can be used between the open and close tags, such as
  * variables (\V[n]), actor names (\N[n]), party member names (\P[n]), and
  * currency unit (\G).
@@ -133,189 +136,189 @@
 $alBhedify = null;
 
 function AlBhedify() {
-  this.initialize();
+    this.initialize();
 }
 
 AlBhedify.prototype.initialize = function () {
-  const parameters = PluginManager.parameters('AlBhedify');
-  this.openTag = String(parameters['Open Tag']);
-  this.closeTag = String(parameters['Close Tag']);
-  this.regex = this.makeRegex(this.openTag, this.closeTag);
-  this.language = this.prepareLanguageMap(parameters['Language Map']);
-  this.useColors = (parameters['Use Colors'] === 'true');
-  this.color = {
-    highlight: parseInt(parameters['Highlight Color']),
-    normal: parseInt(parameters['Normal Color']),
-  };
-  this.map = Object.assign({}, this.language);
+    const parameters = PluginManager.parameters('AlBhedify');
+    this.openTag = String(parameters['Open Tag']);
+    this.closeTag = String(parameters['Close Tag']);
+    this.regex = this.makeRegex(this.openTag, this.closeTag);
+    this.language = this.prepareLanguageMap(parameters['Language Map']);
+    this.useColors = (parameters['Use Colors'] === 'true');
+    this.color = {
+        highlight: parseInt(parameters['Highlight Color']),
+        normal: parseInt(parameters['Normal Color']),
+    };
+    this.map = Object.assign({}, this.language);
 };
 
 AlBhedify.prototype.makeRegex = function (openTag, closeTag) {
-  openTag = openTag.replace(/\\/, '\x1b');
-  openTag = openTag.replace(/([\[\](){}^$*.+?|,\-])/g, (_, c) =>
-    `\\${c}`
-  );
-  closeTag = closeTag.replace(/\\/, '\x1b');
-  closeTag = closeTag.replace(/([\[\](){}^$*.+?|,\-])/g, (_, c) =>
-    `\\${c}`
-  );
-  return new RegExp(`${openTag}([\\S\\s]+?)${closeTag}`, 'g');
+    openTag = openTag.replace(/\\/, '\x1b');
+    openTag = openTag.replace(/([\[\](){}^$*.+?|,\-])/g, (_, c) =>
+        `\\${c}`
+    );
+    closeTag = closeTag.replace(/\\/, '\x1b');
+    closeTag = closeTag.replace(/([\[\](){}^$*.+?|,\-])/g, (_, c) =>
+        `\\${c}`
+    );
+    return new RegExp(`${openTag}([\\S\\s]+?)${closeTag}`, 'g');
 };
 
 AlBhedify.prototype.prepareLanguageMap = function (languageMap) {
-  const language = JSON.parse(languageMap);
-  const map = {};
-  for (let key in language) {
-    map[key] = language[key].trim()[0].toUpperCase();
-  }
-  return map;
+    const language = JSON.parse(languageMap);
+    const map = {};
+    for (let key in language) {
+        map[key] = language[key].trim()[0].toUpperCase();
+    }
+    return map;
 };
 
 AlBhedify.prototype.learnTranslation = function (letter) {
-  delete this.map[letter.trim()[0].toUpperCase()];
+    delete this.map[letter.trim()[0].toUpperCase()];
 };
 
 AlBhedify.prototype.forgetTranslation = function (letter) {
-  letter = letter.trim()[0].toUpperCase();
-  this.map[letter] = this.language[letter];
+    letter = letter.trim()[0].toUpperCase();
+    this.map[letter] = this.language[letter];
 };
 
 AlBhedify.prototype.setColorOptions = function ({useColor, highlight, normal}) {
-  this.useColor = useColor;
-  this.color.highlight = highlight;
-  this.color.normal = normal;
+    this.useColor = useColor;
+    this.color.highlight = highlight;
+    this.color.normal = normal;
 };
 
 AlBhedify.prototype.setTags = function (openTag, closeTag) {
-  this.openTag = openTag;
-  this.closeTag = closeTag;
-  this.regex = this.makeRegex(openTag, closeTag);
+    this.openTag = openTag;
+    this.closeTag = closeTag;
+    this.regex = this.makeRegex(openTag, closeTag);
 };
 
 AlBhedify.prototype.isLetterKnown = function (letter, switchId) {
-  letter = letter.trim()[0].toUpperCase();
-  $gameSwitches.setValue(switchId, !this.map[letter]);
+    letter = letter.trim()[0].toUpperCase();
+    $gameSwitches.setValue(switchId, !this.map[letter]);
 };
 
 AlBhedify.prototype.translate = function (text) {
-  return text.split('').map((char) => {
-    const charUpper = char.toUpperCase();
-    const isUpperCase = charUpper === char;
-    const translated = this.map[charUpper] || char;
-    return isUpperCase ? translated : translated.toLowerCase();
-  }).join('');
+    return text.split('').map((char) => {
+        const charUpper = char.toUpperCase();
+        const isUpperCase = charUpper === char;
+        const translated = this.map[charUpper] || char;
+        return isUpperCase ? translated : translated.toLowerCase();
+    }).join('');
 };
 
 AlBhedify.prototype.translateWithColors = function (text) {
-  const translatedText = text.split('').map((char) => {
-    const charUpper = char.toUpperCase();
-    const isUpperCase = charUpper === char;
-    const translated = this.map[charUpper];
-    if (translated) {
-      return {
-        char: isUpperCase ? translated : translated.toLowerCase(),
-        translated: true,
-      };
-    } else {
-      return {
-        char,
-        translated: false,
-      };
+    const translatedText = text.split('').map((char) => {
+        const charUpper = char.toUpperCase();
+        const isUpperCase = charUpper === char;
+        const translated = this.map[charUpper];
+        if (translated) {
+            return {
+                char: isUpperCase ? translated : translated.toLowerCase(),
+                translated: true,
+            };
+        } else {
+            return {
+                char,
+                translated: false,
+            };
+        }
+    });
+
+    let outputText = '';
+    let previousCharTranslated = false;
+    for (let char of translatedText) {
+        if (char.translated === previousCharTranslated) {
+            outputText += char.char;
+        } else {
+            outputText += (
+                char.translated ?
+                    `\x1bc[${this.color.highlight}]${char.char}` :
+                    `\x1bc[${this.color.normal}]${char.char}`
+            );
+            previousCharTranslated = char.translated;
+        }
     }
-  });
 
-  let outputText = '';
-  let previousCharTranslated = false;
-  for (let char of translatedText) {
-    if (char.translated === previousCharTranslated) {
-      outputText += char.char;
-    } else {
-      outputText += (
-        char.translated ?
-          `\x1bc[${this.color.highlight}]${char.char}` :
-          `\x1bc[${this.color.normal}]${char.char}`
-      );
-      previousCharTranslated = char.translated;
+    if (previousCharTranslated) {
+        outputText += `\x1bc[${this.color.normal}]`;
     }
-  }
 
-  if (previousCharTranslated) {
-    outputText += `\x1bc[${this.color.normal}]`;
-  }
-
-  return outputText;
+    return outputText;
 };
 
 (function () {
-  PluginManager.registerCommand('AlBhedify', 'learn', (args) => {
-    $alBhedify.learnTranslation(args.letter);
-  });
+    PluginManager.registerCommand('AlBhedify', 'learn', (args) => {
+        $alBhedify.learnTranslation(args.letter);
+    });
 
-  PluginManager.registerCommand('AlBhedify', 'forget', (args) => {
-    $alBhedify.forgetTranslation(args.letter);
-  });
+    PluginManager.registerCommand('AlBhedify', 'forget', (args) => {
+        $alBhedify.forgetTranslation(args.letter);
+    });
 
-  PluginManager.registerCommand('AlBhedify', 'color', (args) => {
-    $alBhedify.setColorOptions(args);
-  });
+    PluginManager.registerCommand('AlBhedify', 'color', (args) => {
+        $alBhedify.setColorOptions(args);
+    });
 
-  PluginManager.registerCommand('AlBhedify', 'isKnown', (args) => {
-    $alBhedify.isLetterKnown(args.letter, args.switch);
-  });
+    PluginManager.registerCommand('AlBhedify', 'isKnown', (args) => {
+        $alBhedify.isLetterKnown(args.letter, args.switch);
+    });
 
-  PluginManager.registerCommand('AlBhedify', 'tags', (args) => {
-    $alBhedify.setTags(args.openTag, args.closeTag);
-  });
+    PluginManager.registerCommand('AlBhedify', 'tags', (args) => {
+        $alBhedify.setTags(args.openTag, args.closeTag);
+    });
 
-  //=========================================================================
-  // DataManager
-  //=========================================================================
-  // Initialize translation plugin.
-  //-------------------------------------------------------------------------
-  const _DataManager_createGameObjects = DataManager.createGameObjects;
-  DataManager.createGameObjects = function () {
-    _DataManager_createGameObjects.call(this);
-    $alBhedify = new AlBhedify();
-  };
+    //==========================================================================
+    // DataManager
+    //==========================================================================
+    // Initialize translation plugin.
+    //--------------------------------------------------------------------------
+    const _DataManager_createGameObjects = DataManager.createGameObjects;
+    DataManager.createGameObjects = function () {
+        _DataManager_createGameObjects.call(this);
+        $alBhedify = new AlBhedify();
+    };
 
-  //-------------------------------------------------------------------------
-  // Save translation data.
-  //-------------------------------------------------------------------------
-  const _DataManager_makeSaveContents = DataManager.makeSaveContents;
-  DataManager.makeSaveContents = function () {
-    const contents = _DataManager_makeSaveContents.call(this);
-    contents.alBhedify = $alBhedify;
-    return contents;
-  };
+    //--------------------------------------------------------------------------
+    // Save translation data.
+    //--------------------------------------------------------------------------
+    const _DataManager_makeSaveContents = DataManager.makeSaveContents;
+    DataManager.makeSaveContents = function () {
+        const contents = _DataManager_makeSaveContents.call(this);
+        contents.alBhedify = $alBhedify;
+        return contents;
+    };
 
-  //-------------------------------------------------------------------------
-  // Load translation data.
-  //-------------------------------------------------------------------------
-  const _DataManager_extractSaveContents = DataManager.extractSaveContents;
-  DataManager.extractSaveContents = function (contents) {
-    _DataManager_extractSaveContents.call(this, contents);
-    if (contents.alBhedify) {
-      $alBhedify = contents.alBhedify;
-    } else {
-      console.warn('Could not load AlBhedify data');
-    }
-  };
+    //--------------------------------------------------------------------------
+    // Load translation data.
+    //--------------------------------------------------------------------------
+    const _DataManager_extractSaveContents = DataManager.extractSaveContents;
+    DataManager.extractSaveContents = function (contents) {
+        _DataManager_extractSaveContents.call(this, contents);
+        if (contents.alBhedify) {
+            $alBhedify = contents.alBhedify;
+        } else {
+            console.warn('Could not load AlBhedify data');
+        }
+    };
 
-  //=========================================================================
-  // Window_Base
-  //=========================================================================
-  // Translate text contained within tags based on which letters are known.
-  //-------------------------------------------------------------------------
-  const _Window_Base_convertEscapeCharacters = Window_Base.prototype.convertEscapeCharacters;
-  Window_Base.prototype.convertEscapeCharacters = function (text) {
-    text = _Window_Base_convertEscapeCharacters.call(this, text);
-    text = text.replace($alBhedify.regex, (_, txt) => (
-      $alBhedify.useColors ?
-        $alBhedify.translateWithColors(txt) :
-        $alBhedify.translate(txt)
-    ));
-    return text;
-  };
+    //==========================================================================
+    // Window_Base
+    //==========================================================================
+    // Translate text contained within tags based on which letters are known.
+    //--------------------------------------------------------------------------
+    const _Window_Base_convertEscapeCharacters = Window_Base.prototype.convertEscapeCharacters;
+    Window_Base.prototype.convertEscapeCharacters = function (text) {
+        text = _Window_Base_convertEscapeCharacters.call(this, text);
+        text = text.replace($alBhedify.regex, (_, txt) => (
+            $alBhedify.useColors ?
+                $alBhedify.translateWithColors(txt) :
+                $alBhedify.translate(txt)
+        ));
+        return text;
+    };
 })();
 
 /*~struct~LanguageMap:
