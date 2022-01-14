@@ -6,7 +6,7 @@
 
 1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.0`
 2. Download `AlBhedify.js`
-3. Save or copy `AlBhedify.js` to `/plugins` in your project folder
+3. Save or copy `AlBhedify.js` to `/js/plugins/` in your project folder
 4. Inside the editor, open the plugin manager and add **AlBhedify**
 5. Place AlBhedify before any other plugins that modify windows or messages
 6. Configure the plugin parameters - **at the very least, open the `Language Map` parameter and press "OK"**
