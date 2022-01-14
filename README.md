@@ -20,6 +20,15 @@ Now the letter `E` will no longer be AlBhedified. The message from before will s
 
 ![E has been learned](img/sample-translated-e.png)
 
+## Installation
+
+1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.0`
+2. Download `AlBhedify.js`
+3. Save or copy `AlBhedify.js` to `/plugins` in your project folder
+4. Inside the editor, open the plugin manager and add **AlBhedify**
+5. Place AlBhedify before any other plugins that modify windows or messages
+6. Configure the plugin parameters - **at the very least, open the `Language Map` parameter and press "OK"**
+
 ## Commands
 
 ### Learn Letter
@@ -47,7 +56,7 @@ Set a switch depending on whether a letter is known. If the regular letter provi
 ## Caveats
 
 - This plugin should probably be placed before any other plugins that modify text and window behavior.
-- Be sure to set the `Translation Map` parameter in the plugin settings, *even if you just want to use the default translation map*. If you don't at least open up the parameter editor and press "OK", you'll get the following error when you start the game: `Unexpected end of JSON input`.
+- Be sure to set the `Language Map` parameter in the plugin settings, *even if you just want to use the default language map*. If you don't at least open up the parameter editor and press "OK", you'll get the following error when you start the game: `Unexpected end of JSON input`.
 - Most control codes can be used inside translation tags. These include (among others):
   - Variable value: `\V[n]`
   - Actor name: `\N[n]`
