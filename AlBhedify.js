@@ -169,7 +169,7 @@ AlBhedify.prototype.prepareLanguageMap = function (languageMap) {
     const language = JSON.parse(languageMap);
     const map = {};
     for (let key in language) {
-        map[key] = language[key].trim()[0].toUpperCase();
+        map[key] = language[key].trim().toUpperCase().replace(/\\/g, '\x1b');
     }
     return map;
 };
