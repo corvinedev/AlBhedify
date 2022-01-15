@@ -4,7 +4,7 @@
 
 ## Installation
 
-1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.0`
+1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.1`
 2. Download `AlBhedify.js`
 3. Save or copy `AlBhedify.js` to `/js/plugins/` in your project folder
 4. Inside the editor, open the plugin manager and add **AlBhedify**
@@ -70,3 +70,4 @@ Set a switch depending on whether a letter is known. If the regular letter provi
   - Set font size: `\FS[n]`
   - Display icon: `\I[n]`
 - When the `Use Colors` parameter is `true`, this plugin will add color control codes (`\C[n]`) into the translated text. The `Normal Color` color code will get added after the last AlBhedified character to ensure that any text after the translated text is rendered in the normal text color.
+- You can use icon control codes (`\I[n]`) as values in the `Language Map`! This could be used to create a language with symbols of your own design.

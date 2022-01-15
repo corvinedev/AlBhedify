@@ -1,5 +1,5 @@
 //==============================================================================
-// AlBhedify
+// AlBhedify - v1.0.1
 //==============================================================================
 /*:
  * @target MZ
@@ -104,6 +104,9 @@
  * @desc Set this switch ON if the regular letter is known (i.e. it's not getting AlBhedified anymore), otherwise OFF.
  *
  * @help
+ * ============================================================================
+ * AlBhedify - v1.0.1
+ * ============================================================================
  * Translate regular letters into an in-game language a la FFX's Al Bhed. This
  * plugin should probably go before any other plugins that modify message
  * boxes.
@@ -184,7 +187,7 @@ AlBhedify.prototype.forgetTranslation = function (letter) {
 };
 
 AlBhedify.prototype.setColorOptions = function ({useColor, highlight, normal}) {
-    this.useColor = useColor;
+    this.useColors = useColor;
     this.color.highlight = highlight;
     this.color.normal = normal;
 };
