@@ -43,7 +43,7 @@ Forget the translation for a regular letter. This letter will be AlBhedified in 
 
 Set and modify options for highlighting AlBhedified letters. You can disable color coding of translations with this command, and you can change the color code used to highlight AlBhedified letters and the normal color code used for regular letters.
 
-**This should probably be 0. Keep in mind that if the last character in a translated section of text was AlBhedified, and `Use Color` is `true`, then any text following the `Close Tag` will get rendered with the color code for `Normal Color`.**
+**`Normal Color` should probably be 0. Keep in mind that if `Use Color` is set to `true`, then the color code for the normal color will be placed after the last AlBhedified character.**
 
 ### Set Tags
 
@@ -69,4 +69,4 @@ Set a switch depending on whether a letter is known. If the regular letter provi
   - Set position: `\PX[n]` and `\PY[n]`
   - Set font size: `\FS[n]`
   - Display icon: `\I[n]`
-- When the `Use Colors` parameter is `true`, this plugin will add color control codes (`\C[n]`) into the translated text. If the last character in the translated text is AlBhedified, then the `Normal Color` color code will get added after it to ensure that any text after the translated text is rendered in the normal text color.
+- When the `Use Colors` parameter is `true`, this plugin will add color control codes (`\C[n]`) into the translated text. The `Normal Color` color code will get added after the last AlBhedified character to ensure that any text after the translated text is rendered in the normal text color.
