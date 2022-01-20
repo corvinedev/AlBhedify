@@ -49,6 +49,15 @@
  * @text Letter
  * @desc The regular letter to learn. This letter will no longer be AlBhedified in translations.
  *
+ * @command learnMulti
+ * @text Learn Multiple Letters
+ * @desc Learn the translations for many regular letters. These letters will no longer be AlBhedified in translations.
+ *
+ * @arg letters
+ * @type string[]
+ * @text Letters
+ * @desc A list of regular letters to learn. Each row can contain 1 letter.
+ *
  * @command forget
  * @text Forget Letter
  * @desc Forget the translation for a regular letter. This letter will be AlBhedified in translations.
@@ -56,6 +65,15 @@
  * @arg letter
  * @text Letter
  * @desc The regular letter to forget. This letter will be AlBhedified in translations.
+ *
+ * @command forgetMulti
+ * @text Forget Multiple Letters
+ * @desc Forget the translations for many regular letters. These letters will be AlBhedified in translations.
+ *
+ * @arg letters
+ * @type string[]
+ * @text Letters
+ * @desc A list of regular letters to forget. Each row can contain 1 letter.
  *
  * @command color
  * @text Set Color Options
@@ -102,6 +120,20 @@
  * @text Switch
  * @type switch
  * @desc Set this switch ON if the regular letter is known (i.e. it's not getting AlBhedified anymore), otherwise OFF.
+ *
+ * @command areMultiKnown
+ * @text Multiple Letters Known?
+ * @desc Set a switch depending on whether or not the translations for multiple letters are known.
+ *
+ * @arg letters
+ * @type string[]
+ * @text Letters
+ * @desc A list of regular letters to check for. Each row can contain 1 letter.
+ *
+ * @arg switch
+ * @text Switch
+ * @type switch
+ * @desc Set this switch ON if listed regular letters are known (i.e. not getting AlBhedified anymore), otherwise OFF.
  *
  * @help
  * ============================================================================
@@ -203,6 +235,17 @@ AlBhedify.prototype.isLetterKnown = function (letter, switchId) {
     $gameSwitches.setValue(switchId, !this.map[letter]);
 };
 
+AlBhedify.prototype.areLettersKnown = function (letters, switchId) {
+    let result = false;
+    for (let letter of letters) {
+        result = !this.map[letter.trim()[0].toUpperCase()];
+        if (!result) {
+            break;
+        }
+    }
+    $gameSwitches.setValue(switchId, result);
+};
+
 AlBhedify.prototype.translate = function (text) {
     return text.split('').map((char) => {
         const charUpper = char.toUpperCase();
@@ -257,8 +300,20 @@ AlBhedify.prototype.translateWithColors = function (text) {
         $alBhedify.learnTranslation(args.letter);
     });
 
+    PluginManager.registerCommand('AlBhedify', 'learnMulti', (args) => {
+        for (let letter of args.letters) {
+            $alBhedify.learnTranslation(letter);
+        }
+    });
+
     PluginManager.registerCommand('AlBhedify', 'forget', (args) => {
         $alBhedify.forgetTranslation(args.letter);
+    });
+
+    PluginManager.registerCommand('AlBhedify', 'forgetMulti', (args) => {
+        for (let letter of args.letters) {
+            $alBhedify.forgetTranslation(letter);
+        }
     });
 
     PluginManager.registerCommand('AlBhedify', 'color', (args) => {
@@ -267,6 +322,10 @@ AlBhedify.prototype.translateWithColors = function (text) {
 
     PluginManager.registerCommand('AlBhedify', 'isKnown', (args) => {
         $alBhedify.isLetterKnown(args.letter, args.switch);
+    });
+
+    PluginManager.registerCommand('AlBhedify', 'areMultiKnown', (args) => {
+        $alBhedify.areLettersKnown(args.letters, args.switch);
     });
 
     PluginManager.registerCommand('AlBhedify', 'tags', (args) => {

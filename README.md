@@ -35,9 +35,19 @@ Now the letter `E` will no longer be AlBhedified. The message from before will s
 
 Learn the translation for a regular letter. This letter will no longer be AlBhedified in translations.
 
+### Learn Multiple Letters
+
+Learn the translations for a list of regular letters.
+
+![Learn multiple letters](img/sample-learn-multi.png)
+
 ### Forget Letter
 
 Forget the translation for a regular letter. This letter will be AlBhedified in translations.
+
+### Forget Multiple Letters
+
+Forget the translations for a list of regular letters.
 
 ### Set Color Options
 
@@ -52,6 +62,10 @@ Set `Open Tag` and `Close Tag`.
 ### Letter Known?
 
 Set a switch depending on whether a letter is known. If the regular letter provided as an argument is known (i.e. if that regular letter is no longer AlBhedified), then the switch provided as an argument will be set to `ON`. Otherwise, the switch will be set to `OFF`.
+
+### Multiple Letters Known?
+
+Set a switch depending on whether all letters in a list of letters are known. If every letter in the list is known, then the switch provided as an argument will be set to `ON`. If *any* letter in the list is not known, then the switch will be set to `OFF`.
 
 ## Caveats
 
