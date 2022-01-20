@@ -4,7 +4,7 @@
 
 ## Installation
 
-1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.0.1`
+1. Go to the [Releases](https://github.com/corvinedev/AlBhedify/releases/) page and locate the most recent release: `v1.1.0`
 2. Download `AlBhedify.js`
 3. Save or copy `AlBhedify.js` to `/js/plugins/` in your project folder
 4. Inside the editor, open the plugin manager and add **AlBhedify**
