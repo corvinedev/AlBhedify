@@ -188,6 +188,10 @@ AlBhedify.prototype.initialize = function () {
     this.map = Object.assign({}, this.language);
 };
 
+AlBhedify.prototype.afterLoad = function () {
+    this.regex = this.makeRegex(this.openTag, this.closeTag);
+};
+
 AlBhedify.prototype.makeRegex = function (openTag, closeTag) {
     openTag = openTag.replace(/\\/, '\x1b');
     openTag = openTag.replace(/([\[\](){}^$*.+?|,\-])/g, (_, c) =>
@@ -361,6 +365,7 @@ AlBhedify.prototype.translateWithColors = function (text) {
         _DataManager_extractSaveContents.call(this, contents);
         if (contents.alBhedify) {
             $alBhedify = contents.alBhedify;
+            $alBhedify.afterLoad();
         } else {
             console.warn('Could not load AlBhedify data');
         }
